@@ -26,6 +26,15 @@
     "no-underscore-dangle":"off",
     "no-console": "off",
     "camelcase": "off",
+    "no-useless-constructor":"off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "prefix": ["I"],
+        "format": ["PascalCase"]
+      }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
