@@ -1,13 +1,18 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jest":true
   },
   "extends": [
     "airbnb-base",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -23,10 +28,15 @@
     "prettier"
   ],
   "rules": {
+    "import/no-unresolved":"off",
+    "import/no-extraneous-dependencies":["error",{
+      "devDependencies":true
+    }],
     "no-underscore-dangle":"off",
     "no-console": "off",
     "camelcase": "off",
     "no-useless-constructor":"off",
+    "@typescript-eslint/no-var-requires":"off",
     "@typescript-eslint/naming-convention": [
       "error",
       {
@@ -35,13 +45,7 @@
         "format": ["PascalCase"]
       }
     ],
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "ts": "never"
-      }
-    ],
+    "import/extensions": "off",
     "prettier/prettier": "error",
     "class-methods-use-this":"off",
     "@typescript-eslint/no-unused-vars":["error",{
@@ -50,7 +54,8 @@
   },
   "settings": {
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+      }
     }
   }
 }
