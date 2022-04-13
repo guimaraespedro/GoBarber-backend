@@ -1,13 +1,15 @@
 import { v4 as uuid } from 'uuid';
-import { isEqual } from 'date-fns';
+import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 import Appointment from '../../infra/typeorm/entities/Appointment';
 
 // DTO - Data Transfer Object
 
-class AppointmentsRepository implements IAppointmentsRepository {
+class FakeAppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
 
   public async findByDate(date: Date): Promise<Appointment | undefined> {
@@ -16,6 +18,42 @@ class AppointmentsRepository implements IAppointmentsRepository {
     );
 
     return findAppointment;
+  }
+
+  public async findAllInMonthFromProvider({
+    provider_id,
+    month,
+    year,
+  }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(
+      appointment =>
+        appointment.provider_id === provider_id &&
+        getMonth(appointment.date) + 1 === month &&
+        getYear(appointment.date) === year,
+    );
+
+    console.log(appointments);
+
+    return appointments;
+  }
+
+  public async findAllInDayFromProvider({
+    day,
+    month,
+    provider_id,
+    year,
+  }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(
+      appointment =>
+        appointment.provider_id === provider_id &&
+        getDate(appointment.date) === day &&
+        getMonth(appointment.date) + 1 === month &&
+        getYear(appointment.date) === year,
+    );
+
+    console.log(appointments);
+
+    return appointments;
   }
 
   public async create({
@@ -32,4 +70,4 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }
 }
 
-export default AppointmentsRepository;
+export default FakeAppointmentsRepository;
