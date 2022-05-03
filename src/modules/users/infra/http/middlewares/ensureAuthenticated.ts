@@ -22,6 +22,10 @@ export default function ensureAuthenticated(
 
   const [, token] = authHeader.split(' ');
 
+  if (!authConfig.jwt.secret) {
+    throw new AppError('JWT Secret is missing', 401);
+  }
+
   try {
     const decoded = verify(token, authConfig.jwt.secret);
 
